@@ -1,4 +1,4 @@
-# Python-PBL
+# Projects Based Learning
 
 ## Welcome to my Project-Based Learning Journey in Python!
 
