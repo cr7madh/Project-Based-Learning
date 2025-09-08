@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glass Todo - Beautiful Task Management</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Background Elements -->
+        <div class="background-gradient"></div>
+        <div class="background-orbs">
+            <div class="orb orb-1"></div>
+            <div class="orb orb-2"></div>
+            <div class="orb orb-3"></div>
+        </div>
+
+        <!-- Header -->
+        <header class="app-header glass-panel">
+            <div class="header-left">
+                <h1 class="app-title">
+                    <span class="app-icon">✨</span>
+                    Glass Todo
+                </h1>
+                <div class="task-counter">
+                    <span id="activeCount">0</span> active tasks
+                </div>
+            </div>
+            <div class="header-center">
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Search tasks..." class="search-input glass-input">
+                    <span class="search-icon">🔍</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="icon-btn" id="themeToggle" title="Toggle theme">🌙</button>
+                <button class="icon-btn" id="settingsBtn" title="Settings">⚙️</button>
+                <button class="icon-btn" id="calendarBtn" title="Calendar view">📅</button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="app-main">
+            <!-- Sidebar -->
+            <aside class="sidebar glass-panel">
+                <div class="quick-add-section">
+                    <h3>Quick Add</h3>
+                    <div class="add-task-form">
+                        <input type="text" id="newTaskInput" placeholder="Add a new task..." class="glass-input task-input">
+                        <button id="addTaskBtn" class="btn-primary neon-btn">
+                            <span>+</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="filters-section">
+                    <h3>Filters</h3>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="all">All Tasks</button>
+                        <button class="filter-btn" data-filter="active">Active</button>
+                        <button class="filter-btn" data-filter="completed">Completed</button>
+                    </div>
+                </div>
+
+                <div class="categories-section">
+                    <h3>Categories</h3>
+                    <div class="category-list" id="categoryList">
+                        <!-- Categories will be populated by JS -->
+                    </div>
+                </div>
+
+                <div class="stats-section">
+                    <h3>Statistics</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-number" id="totalTasks">0</span>
+                            <span class="stat-label">Total</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="completedTasks">0</span>
+                            <span class="stat-label">Done</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="completionRate">0%</span>
+                            <span class="stat-label">Rate</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Task List -->
+            <section class="task-area">
+                <div class="task-header">
+                    <div class="view-controls">
+                        <button class="view-btn active" data-view="list">📝 List</button>
+                        <button class="view-btn" data-view="calendar">📅 Calendar</button>
+                    </div>
+                    <div class="sort-controls">
+                        <select id="sortSelect" class="glass-input">
+                            <option value="created">Sort by Date</option>
+                            <option value="priority">Sort by Priority</option>
+                            <option value="category">Sort by Category</option>
+                            <option value="title">Sort by Title</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- List View -->
+                <div class="task-container" id="taskContainer">
+                    <div class="task-list" id="taskList">
+                        <!-- Tasks will be populated by JS -->
+                    </div>
+                    <div class="empty-state" id="emptyState">
+                        <div class="empty-icon">🎯</div>
+                        <h3>No tasks yet</h3>
+                        <p>Add your first task to get started!</p>
+                    </div>
+                </div>
+
+                <!-- Calendar View -->
+                <div class="calendar-container hidden" id="calendarContainer">
+                    <div class="calendar-header">
+                        <button class="nav-btn" id="prevMonth">‹</button>
+                        <h2 id="currentMonth">September 2025</h2>
+                        <button class="nav-btn" id="nextMonth">›</button>
+                    </div>
+                    <div class="calendar-grid" id="calendarGrid">
+                        <!-- Calendar will be populated by JS -->
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Task Detail Modal -->
+        <div class="modal-overlay hidden" id="taskModal">
+            <div class="modal glass-panel">
+                <div class="modal-header">
+                    <h3>Task Details</h3>
+                    <button class="close-btn" id="closeModal">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" id="editTitle" class="glass-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="editDescription" class="glass-input" rows="3"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select id="editCategory" class="glass-input">
+                                <!-- Options populated by JS -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Priority</label>
+                            <select id="editPriority" class="glass-input">
+                                <!-- Options populated by JS -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Due Date</label>
+                        <input type="date" id="editDueDate" class="glass-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Notes</label>
+                        <textarea id="editNotes" class="glass-input" rows="4" placeholder="Add detailed notes..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" id="cancelEdit">Cancel</button>
+                    <button class="btn-primary neon-btn" id="saveTask">Save Changes</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Modal -->
+        <div class="modal-overlay hidden" id="settingsModal">
+            <div class="modal glass-panel">
+                <div class="modal-header">
+                    <h3>Settings</h3>
+                    <button class="close-btn" id="closeSettings">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="settings-section">
+                        <h4>Data Management</h4>
+                        <div class="settings-actions">
+                            <button class="btn-secondary" id="exportData">Export Data</button>
+                            <button class="btn-secondary" id="importData">Import Data</button>
+                            <button class="btn-danger" id="clearData">Clear All Data</button>
+                        </div>
+                    </div>
+                    <div class="settings-section">
+                        <h4>Keyboard Shortcuts</h4>
+                        <div class="shortcuts-list" id="shortcutsList">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notifications -->
+        <div class="toast-container" id="toastContainer"></div>
+
+        <!-- Floating Action Button -->
+        <button class="fab neon-btn" id="fabBtn" title="Quick add task">+</button>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
